@@ -1,13 +1,22 @@
 class TasksController < ApplicationController
   before_action :require_user_logged_in
   before_action :correct_user, only: [:destroy]
-  
+
+  # routes: /tasks(task_path)
+  # view:   /tasks/index.html.erb
   def index
     @tasks = current_user.tasks
   end
   
+  
+  # routes: /tasks/:id
+  # @params :idは整数
+  # view:   /tasks/show.html.erb
   def show
     @task = current_user.tasks.find_by(id: params[:id])
+    if @task.blank?
+      redirect_to root_url
+    end
   end
 
   def new
